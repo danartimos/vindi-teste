@@ -6,16 +6,29 @@
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
         <script src="{{ asset('js/bootstrap.min.js') }}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        
+        <link href='{{ asset('fullcalendar/core/main.css') }}' rel='stylesheet' />
+        <link href='{{ asset('fullcalendar/daygrid/main.css') }}' rel='stylesheet' />
+        <link href='{{ asset('fullcalendar/timegrid/main.css') }}' rel='stylesheet' />
+        <link href='{{ asset('fullcalendar/list/main.css') }}' rel='stylesheet' />
+        <script src='{{ asset('fullcalendar/core/main.js') }}'></script>
+        <script src='{{ asset('fullcalendar/interaction/main.js') }}'></script>
+        <script src='{{ asset('fullcalendar/daygrid/main.js') }}'></script>
+        <script src='{{ asset('fullcalendar/timegrid/main.js') }}'></script>
+        <script src='{{ asset('fullcalendar/list/main.js') }}'></script>
+        
     </head>
     <body>
         <header>
             <!-- Fixed navbar -->
             <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
                 <a class="navbar-brand" href="#">Sala JK</a>
-            </header>
-
-
+            </nav>
+            
+        </header>
+        
         {% block body %}{% endblock %}
     </body>
     
