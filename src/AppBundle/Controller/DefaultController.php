@@ -34,15 +34,12 @@ class DefaultController extends Controller
         if ( $request->isMethod('POST') ) {
             $this->getDoctrine()->getRepository(Usuario::class)->save($request);
             
-            $this->addFlash(
-                'notice',
-                'Usuário cadastrado!'
-            );
+            $this->addFlash('sucess','Usuário cadastrado!');
         }
         
         //seleciona todos os usuarios
         $usuarios = $this->getDoctrine()->getRepository(Usuario::class)->findAll();
-        
+            
         return $this->render('default/usuario.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
             'usuarios' => $usuarios,

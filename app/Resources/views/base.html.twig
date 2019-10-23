@@ -33,13 +33,36 @@
                         </li>
                     </ul>
                 </div>
+                    
+                {% set logado = app.session.get('logado')%}
+                {% if logado['in']|default('false') == 'true' %}
+                    Nome: {{logado['nome']}}
+                {% else %}
+                    <form class="form-inline my-2 my-lg-0">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">@</div>
+                            </div>
+                            <input type="text" class="form-control  mr-sm-2" name="usuario" id="usuario" placeholder="Digite o Usuário">
+                        </div>
+                        <input type="password" class="form-control  mr-sm-2" name="senha" id="senha" placeholder="Digite a Senha">
+                        
+                        <button class="btn btn-primary my-2 my-sm-0" type="submit">Entrar</button>
+                    </form>
+                {% endif %}
             </nav>
             
         </header>
+            
         <br><br><br>
         
-        {% for message in app.flashes('notice') %}
+        {% for message in app.flashes('success') %}
             <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('danger') %}
+            <div class="alert alert-danger" role="alert">
                 {{ message }}
             </div>
         {% endfor %}
