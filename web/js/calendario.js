@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
-
+    var d = new Date();
+    
     var calendar = new FullCalendar.Calendar(calendarEl, {
         plugins: ['dayGrid', 'timeGrid', 'list', 'interaction'],
         header: {
@@ -9,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
             right: 'timeGridWeek,listWeek'
         },
         locale: 'pt-br',
-        defaultDate: '2019-08-12',
+        defaultDate: d,
         defaultView: 'timeGridWeek',
         navLinks: true, // can click day/week names to navigate views
         editable: false,
@@ -74,3 +75,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
     calendar.render();
 });
+

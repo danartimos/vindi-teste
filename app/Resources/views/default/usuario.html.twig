@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reserva: Cadastro de Usuário{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block body %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Usuário</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+            <tr>
+                <th scope="row">{{usuario.id}}</th>
+                <td>{{usuario.nome}}</td>
+                <td>@{{usuario.usuario}}</td>
+                <td>delete</td>
+            </tr>
+            {% endfor %}
+            {% if usuarios|length == 0 %}
+            <tr>
+                <td colspan="4"><center>Nenhum usuário encontrado</center></td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
