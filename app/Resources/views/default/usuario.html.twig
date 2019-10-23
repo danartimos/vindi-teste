@@ -6,32 +6,61 @@
 {% endblock %}
 
 {% block body %}
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nome</th>
-                <th scope="col">Usuário</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for usuario in usuarios %}
-            <tr>
-                <th scope="row">{{usuario.id}}</th>
-                <td>{{usuario.nome}}</td>
-                <td>@{{usuario.usuario}}</td>
-                <td>delete</td>
-            </tr>
-            {% endfor %}
-            {% if usuarios|length == 0 %}
-            <tr>
-                <td colspan="4"><center>Nenhum usuário encontrado</center></td>
-            </tr>
-            {% endif %}
-        </tbody>
-    </table>
-
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-3">
+            <h4>Novo Usuário</h4>
+            <hr>
+            <form action="{{path('usuario')}}" method="POST">
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input type="text" class="form-control" name="nome" id="nome" placeholder="Digite o Nome">
+                </div>
+                <div class="form-group">
+                    <label for="usuario">Usuário</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">@</div>
+                        </div>
+                        <input type="text" class="form-control" name="usuario" id="usuario" placeholder="Digite o Usuário">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" class="form-control" name="senha" id="senha" placeholder="Digite a Senha">
+                </div>
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </form>
+        </div>
+        <div class="col-7">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Usuário</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usuario in usuarios %}
+                        <tr>
+                            <th scope="row">{{usuario.id}}</th>
+                            <td>{{usuario.nome}}</td>
+                            <td>@{{usuario.usuario}}</td>
+                            <td>delete</td>
+                        </tr>
+                    {% endfor %}
+                    {% if usuarios|length == 0 %}
+                        <tr>
+                            <td colspan="4"><center>Nenhum usuário encontrado</center></td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-1"></div>
+    </div>
 
 {% endblock %}
 

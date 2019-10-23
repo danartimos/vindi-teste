@@ -2,6 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Usuario;
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  * UsuarioRepository
  *
@@ -10,4 +13,22 @@ namespace AppBundle\Repository;
  */
 class UsuarioRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * Salva um novo usuario
+     * @param $request
+     * @return boolean
+     */
+    public function save($request) {
+        $dados = $request->request->all();
+        
+        $usuario = new Usuario();
+        $usuario->setNome($dados['nome']);
+        $usuario->setUsuario($dados['usuario']);
+        $usuario->setSenha($dados['senha']);
+        
+        $this->_em->persist($usuario);
+        $this->_em->flush();
+        
+        return true;
+    }
 }

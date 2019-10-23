@@ -30,6 +30,17 @@ class DefaultController extends Controller
      */
     public function usuarioAction(Request $request)
     {
+        //verifica o método e tenta salvar
+        if ( $request->isMethod('POST') ) {
+            $this->getDoctrine()->getRepository(Usuario::class)->save($request);
+            
+            $this->addFlash(
+                'notice',
+                'Usuário cadastrado!'
+            );
+        }
+        
+        //seleciona todos os usuarios
         $usuarios = $this->getDoctrine()->getRepository(Usuario::class)->findAll();
         
         return $this->render('default/usuario.html.twig', [
