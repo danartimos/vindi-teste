@@ -35,17 +35,6 @@ class Calendario {
         this.calendar.render();        
     };
     
-    ini() {
-        var parser = new DOMParser;
-        var dom = parser.parseFromString(eventos,'text/html');
-        eventos = dom.body.textContent;        
-        eventos = jQuery.parseJSON(eventos);
-
-        eventos.forEach(function(data){
-            //addEvento(data.id,data.nome,data.data);
-        });
-    };
-    
     addEvento(id,nome,data) {
         this.calendar.addEventSource([{
             id: id,
@@ -60,6 +49,18 @@ class Calendario {
     
     removerEvento() {
         
+    };
+    
+    ini() {
+        var parser = new DOMParser;
+        var dom = parser.parseFromString(eventos,'text/html');
+        eventos = dom.body.textContent;        
+        eventos = jQuery.parseJSON(eventos);
+
+        eventos.forEach(function(data){
+            console.log(data)
+            this.addEvento(data.id,data.nome,data.data);
+        }.bind(this));
     };
 };
 

@@ -42,7 +42,7 @@ class DefaultController extends Controller
         $eventos[] = [
             'id' => 1,
             'nome' => 'Danilo',
-            'data' => '2019-20-24T07:00',
+            'data' => '2019-10-24T07:00',
         ];
         
         return $this->render('default/index.html.twig', [
