@@ -21,8 +21,8 @@
 
 {% block javascripts %}
     <script>
-        var eventos = '{{eventos}}';
-        console.log(eventos);
+        var logado = '{{logado['in']|default('false')}}';
+        var eventos = decodeURI('{{eventos}}');
     </script>
     <script src="{{ asset('js/calendario.js') }}"></script>
 {% endblock %}

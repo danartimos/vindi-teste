@@ -1,78 +1,67 @@
-document.addEventListener('DOMContentLoaded', function () {
-    var calendarEl = document.getElementById('calendar');
-    var d = new Date();
+class Calendario {
+    calendar;
     
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        plugins: ['dayGrid', 'timeGrid', 'list', 'interaction'],
-        header: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'timeGridWeek,listWeek'
-        },
-        locale: 'pt-br',
-        defaultDate: d,
-        defaultView: 'timeGridWeek',
-        navLinks: true, // can click day/week names to navigate views
-        editable: false,
-        eventLimit: true, // allow "more" link when too many events
-        events: [
-            {
-                title: 'All Day Event',
-                start: '2019-08-01',
-            },
-            {
-                title: 'Long Event',
-                start: '2019-08-07',
-                end: '2019-08-10'
-            },
-            {
-                groupId: 999,
-                title: 'Repeating Event',
-                start: '2019-08-09T16:00:00'
-            },
-            {
-                groupId: 999,
-                title: 'Repeating Event',
-                start: '2019-08-16T16:00:00'
-            },
-            {
-                title: 'Conference',
-                start: '2019-08-11',
-                end: '2019-08-13'
-            },
-            {
-                title: 'Meeting',
-                start: '2019-08-12T10:30:00',
-                end: '2019-08-12T12:30:00'
-            },
-            {
-                title: 'Lunch',
-                start: '2019-08-12T12:00:00'
-            },
-            {
-                title: 'Meeting',
-                start: '2019-08-12T14:30:00'
-            },
-            {
-                title: 'Happy Hour',
-                start: '2019-08-12T17:30:00'
-            },
-            {
-                title: 'Dinner',
-                start: '2019-08-12T20:00:00'
-            },
-            {
-                title: 'Birthday Party',
-                start: '2019-08-13T07:00:00'
-            },
-            {
-                title: 'Click for Google',
-                url: 'http://google.com/',
-                start: '2019-08-28'
-            }
-        ]
-    });
+    constructor() {
+        var calendarEl = document.getElementById('calendar');
+        var d = new Date();
 
-    calendar.render();
-});
+        this.calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: ['dayGrid', 'timeGrid', 'list', 'interaction'],
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'timeGridWeek,listWeek'
+            },
+            locale: 'pt-br',
+            defaultDate: d,
+            defaultView: 'timeGridWeek',
+            navLinks: true,
+            selectable: true,
+            resources: [
+                { id: 'a', title: 'Sala JK' }
+            ],
+            select: function(dateOrObj) {
+                if (logado === '1') {
+                    alert('dailo');
+                }
+            },
+            eventClick: function(info) {
+                if (logado === '1') {
+                    alert('dailo');
+                }
+            },
+        });
 
+        this.calendar.render();        
+    };
+    
+    ini() {
+        var parser = new DOMParser;
+        var dom = parser.parseFromString(eventos,'text/html');
+        eventos = dom.body.textContent;        
+        eventos = jQuery.parseJSON(eventos);
+
+        eventos.forEach(function(data){
+            //addEvento(data.id,data.nome,data.data);
+        });
+    };
+    
+    addEvento(id,nome,data) {
+        this.calendar.addEventSource([{
+            id: id,
+            title: nome,
+            start: data,
+        }]);
+    };
+    
+    salvarEvento() {
+        
+    };
+    
+    removerEvento() {
+        
+    };
+};
+
+calendario = new Calendario;
+calendario.ini();
