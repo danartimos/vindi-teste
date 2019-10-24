@@ -21,9 +21,9 @@ class AgendaRepository extends \Doctrine\ORM\EntityRepository
      */
     public function salvar($params) {
         $agenda = new Agenda();
-        $agenda->setData($dados['data']);
-        $agenda->setHora($dados['hora']);
-        $agenda->setUsuario($dados['usuarioId']);
+        $agenda->setData($params['data']);
+        $agenda->setHora($params['hora']);
+        $agenda->setUsuarioId($params['usuarioId']);
         
         $this->_em->persist($agenda);
         $this->_em->flush();
@@ -38,10 +38,12 @@ class AgendaRepository extends \Doctrine\ORM\EntityRepository
      */
     public function remover($id) {
         $agenda = $this->find($id);
-               
-        $this->_em->remove($agenda);
-        $this->_em->flush();
-        
-        return true;
+        if ($agenda) {
+            $this->_em->remove($agenda);
+            $this->_em->flush();
+            return true;
+        } else {
+            return false;
+        }
     }
 }

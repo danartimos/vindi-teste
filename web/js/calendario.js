@@ -22,13 +22,32 @@ class Calendario {
             ],
             select: function(dateOrObj) {
                 if (logado === '1') {
-                    alert('dan');
+                    var data = {
+                        'data': dateOrObj.startStr,
+                    };
+                    $.post(urlSalvar, data,
+                        function(data, status){
+                            this.addEventSource([{
+                                id: data.message.id,
+                                title: data.message.nome,
+                                start: data.message.data,
+                            }])
+                        }.bind(this)
+                    );
                 }
             },
             eventClick: function(info) {
                 if (logado === '1') {
-                    
-                    //info.event.remove();
+                    var data = {
+                        'id': info.event.id,
+                    };
+                    $.post(urlApagar, data,
+                        function(data, status){
+                            if (data.mensagem !== '' ) {
+                                info.event.remove();
+                            }
+                        }
+                    );
                 }
             },
         });
@@ -44,23 +63,15 @@ class Calendario {
         }]);
     };
     
-    salvarEvento() {
-        
-    };
-    
-    removerEvento() {
-        
-    };
-    
     ini() {
         var parser = new DOMParser;
         var dom = parser.parseFromString(eventos,'text/html');
         eventos = dom.body.textContent;        
         eventos = jQuery.parseJSON(eventos);
-
-        eventos.forEach(function(data){
-            this.addEvento(data.id,data.nome,data.data);
-        }.bind(this));
+        
+        for (var [key, value] of Object.entries(eventos)) {
+            this.addEvento(value.id,value.nome,value.data);
+        }
     };
 };
 

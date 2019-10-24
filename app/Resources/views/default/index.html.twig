@@ -23,6 +23,9 @@
     <script>
         var logado = '{{logado['in']|default('false')}}';
         var eventos = decodeURI('{{eventos}}');
+        
+        var urlSalvar = '{{path('agendaSalvar')}}';
+        var urlApagar = '{{path('agendaApagar')}}';
     </script>
     <script src="{{ asset('js/calendario.js') }}"></script>
 {% endblock %}

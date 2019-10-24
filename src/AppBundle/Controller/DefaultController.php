@@ -35,15 +35,11 @@ class DefaultController extends Controller
             );
             
             $eventos[$agenda->getId()] = [
+                'id' => $agenda->getId(),
                 'nome' => $usuario->getNome(),
-                'data' => $agenda->getData().'T'.$agenda->getHora(),
+                'data' => $agenda->getData()->format('Y-m-d') . 'T' . $agenda->getHora()->format('H:i'),
             ];
         }
-        $eventos[] = [
-            'id' => 1,
-            'nome' => 'Danilo',
-            'data' => '2019-10-24T07:00',
-        ];
         
         return $this->render('default/index.html.twig', [
             'eventos' => json_encode($eventos),
@@ -127,21 +123,22 @@ class DefaultController extends Controller
         
         if ( $request->isMethod('POST') && $this->session->get('logado')) {
             $dados = $request->request->all();
+            $dados = explode('T', $dados['data']);
             
             $params = [
-                'data' => $dados[''],
-                'hora' => $dados[''],
+                'data' => new \DateTime($dados[0]),
+                'hora' => new \DateTime(substr($dados[1],0,5)),
                 'usuarioId' => $this->session->get('logado')['id'],
             ];
             $agenda = $this->getDoctrine()->getRepository(Agenda::class)->salvar($params);
             
             $return = [
                 'status' => 'ok',
-                'message' => json_encode([
+                'message' => [
                                 'id' => $agenda->getId(),
                                 'nome' => $this->session->get('logado')['nome'],
-                                'data' => $agenda->getData() . 'T' . $agenda->getHora(),
-                            ]),
+                                'data' => $agenda->getData()->format('Y-m-d') . 'T' . $agenda->getHora()->format('H:i'),
+                            ],
             ];
         }
         
@@ -159,12 +156,15 @@ class DefaultController extends Controller
         
         if ( $request->isMethod('POST') && $this->session->get('logado')) {
             $dados = $request->request->all();
-            $this->getDoctrine()->getRepository(Agenda::class)->apagar($dados['id']);
             
-            $return = [
-                'status' => 'ok',
-                'message' => $dados['id'],
-            ];
+            $remover = $this->getDoctrine()->getRepository(Agenda::class)->remover($dados['id']);
+            
+            $return['status'] = 'ok';
+            if ($remover) {
+                $return['mensagem'] = $dados['id'];
+            } else {
+                $return['mensagem'] = '';
+            }
         }
         
         return new JsonResponse($return);
