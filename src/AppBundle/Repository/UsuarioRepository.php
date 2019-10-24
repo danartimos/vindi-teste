@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Usuario;
+
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -18,7 +19,7 @@ class UsuarioRepository extends \Doctrine\ORM\EntityRepository
      * @param $request
      * @return boolean
      */
-    public function save($request) {
+    public function salvar($request) {
         $dados = $request->request->all();
         
         $usuario = new Usuario();

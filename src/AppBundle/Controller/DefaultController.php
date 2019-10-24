@@ -58,7 +58,7 @@ class DefaultController extends Controller
     {
         //verifica o método e tenta salvar
         if ( $request->isMethod('POST') ) {
-            $this->getDoctrine()->getRepository(Usuario::class)->save($request);
+            $this->getDoctrine()->getRepository(Usuario::class)->salvar($request);
             
             $this->addFlash('success','Usuário cadastrado!');
         }
@@ -114,5 +114,59 @@ class DefaultController extends Controller
         }
 
         return $this->redirectToRoute('homepage');
+    }
+    
+    /**
+     * @Route("/agenda/salvar", name="agendaSalvar")
+     */
+    public function agendaSalvarAction(Request $request) {
+        $return = [
+            'status' => 'error',
+            'mensagem' => 'Não logado',
+        ];
+        
+        if ( $request->isMethod('POST') && $this->session->get('logado')) {
+            $dados = $request->request->all();
+            
+            $params = [
+                'data' => $dados[''],
+                'hora' => $dados[''],
+                'usuarioId' => $this->session->get('logado')['id'],
+            ];
+            $agenda = $this->getDoctrine()->getRepository(Agenda::class)->salvar($params);
+            
+            $return = [
+                'status' => 'ok',
+                'message' => json_encode([
+                                'id' => $agenda->getId(),
+                                'nome' => $this->session->get('logado')['nome'],
+                                'data' => $agenda->getData() . 'T' . $agenda->getHora(),
+                            ]),
+            ];
+        }
+        
+        return new JsonResponse($return);
+    }
+    
+    /**
+     * @Route("/agenda/apagar", name="agendaApagar")
+     */
+    public function agendaApagarAction(Request $request) {
+        $return = [
+            'status' => 'error',
+            'mensagem' => 'Não logado',
+        ];
+        
+        if ( $request->isMethod('POST') && $this->session->get('logado')) {
+            $dados = $request->request->all();
+            $this->getDoctrine()->getRepository(Agenda::class)->apagar($dados['id']);
+            
+            $return = [
+                'status' => 'ok',
+                'message' => $dados['id'],
+            ];
+        }
+        
+        return new JsonResponse($return);
     }
 }

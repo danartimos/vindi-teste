@@ -2,6 +2,10 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Agenda;
+
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  * AgendaRepository
  *
@@ -10,4 +14,34 @@ namespace AppBundle\Repository;
  */
 class AgendaRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * Salva um novo agendamento
+     * @param $params
+     * @return boolean
+     */
+    public function salvar($params) {
+        $agenda = new Agenda();
+        $agenda->setData($dados['data']);
+        $agenda->setHora($dados['hora']);
+        $agenda->setUsuario($dados['usuarioId']);
+        
+        $this->_em->persist($agenda);
+        $this->_em->flush();
+        
+        return $agenda;
+    }
+    
+    /**
+     * Apaga um agendamento
+     * @param $id
+     * @return boolean
+     */
+    public function remover($id) {
+        $agenda = $this->find($id);
+               
+        $this->_em->remove($agenda);
+        $this->_em->flush();
+        
+        return true;
+    }
 }

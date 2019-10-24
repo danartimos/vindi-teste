@@ -22,12 +22,13 @@ class Calendario {
             ],
             select: function(dateOrObj) {
                 if (logado === '1') {
-                    alert('dailo');
+                    alert('dan');
                 }
             },
             eventClick: function(info) {
                 if (logado === '1') {
-                    alert('dailo');
+                    
+                    //info.event.remove();
                 }
             },
         });
@@ -58,7 +59,6 @@ class Calendario {
         eventos = jQuery.parseJSON(eventos);
 
         eventos.forEach(function(data){
-            console.log(data)
             this.addEvento(data.id,data.nome,data.data);
         }.bind(this));
     };
