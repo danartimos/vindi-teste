@@ -20,5 +20,9 @@
 {% endblock %}
 
 {% block javascripts %}
-<script src="{{ asset('js/calendario.js') }}"></script>
+    <script>
+        var eventos = '{{eventos}}';
+        console.log(eventos);
+    </script>
+    <script src="{{ asset('js/calendario.js') }}"></script>
 {% endblock %}

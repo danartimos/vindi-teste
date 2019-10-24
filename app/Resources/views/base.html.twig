@@ -36,9 +36,10 @@
                     
                 {% set logado = app.session.get('logado')%}
                 {% if logado['in']|default('false') == 'true' %}
-                    Nome: {{logado['nome']}}
+                    <span style="color:#FFFFFF">@{{logado['usuario']}}&nbsp;&nbsp;
+                    <a href="{{path('usuarioSair')}}" class="btn btn-primary my-2 my-sm-0" type="submit">Sair</a></span>
                 {% else %}
-                    <form class="form-inline my-2 my-lg-0">
+                    <form class="form-inline my-2 my-lg-0" action="{{path('usuarioEntrar')}}" method="POST">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">@</div>
