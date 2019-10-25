@@ -54,9 +54,13 @@ class DefaultController extends Controller
     {
         //verifica o método e tenta salvar
         if ( $request->isMethod('POST') ) {
-            $this->getDoctrine()->getRepository(Usuario::class)->salvar($request);
-            
-            $this->addFlash('success','Usuário cadastrado!');
+            $dados = $request->request->all();
+            if (isset($dados['nome'])) {
+                $this->getDoctrine()->getRepository(Usuario::class)->salvar($request);
+                $this->addFlash('success','Usuário cadastrado!');
+            } else {
+                $this->addFlash('danger','Usuário não cadastrado');
+            }
         }
         
         //seleciona todos os usuarios
