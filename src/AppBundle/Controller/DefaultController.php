@@ -73,7 +73,6 @@ class DefaultController extends Controller
      */
     public function usuarioEntrarAction(Request $request)
     {
-        //busca usuário no banco
         if ( $request->isMethod('POST') ) {
             $dados = $request->request->all();
 
@@ -103,7 +102,6 @@ class DefaultController extends Controller
      */
     public function usuarioSairAction(Request $request)
     {
-        //busca usuário no banco
         if ( array_key_exists('in', $this->session->get('logado')) ) {
             $this->session->clear();
             $this->addFlash('success','Nos vemos em breve!');
@@ -118,28 +116,41 @@ class DefaultController extends Controller
     public function agendaSalvarAction(Request $request) {
         $return = [
             'status' => 'error',
-            'mensagem' => 'Não logado',
+            'message' => 'Não logado',
         ];
         
         if ( $request->isMethod('POST') && $this->session->get('logado')) {
             $dados = $request->request->all();
             $dados = explode('T', $dados['data']);
             
-            $params = [
-                'data' => new \DateTime($dados[0]),
-                'hora' => new \DateTime(substr($dados[1],0,5)),
-                'usuarioId' => $this->session->get('logado')['id'],
-            ];
-            $agenda = $this->getDoctrine()->getRepository(Agenda::class)->salvar($params);
+            $data = new \DateTime($dados[0]);
+            $hora = new \DateTime(substr($dados[1],0,5));
             
-            $return = [
-                'status' => 'ok',
-                'message' => [
-                                'id' => $agenda->getId(),
-                                'nome' => $this->session->get('logado')['nome'],
-                                'data' => $agenda->getData()->format('Y-m-d') . 'T' . $agenda->getHora()->format('H:i'),
-                            ],
-            ];
+            if ( ( $data->format('w') != '0' and $data->format('w') != '6' ) and ( $hora->format('G') >= '9' and $hora->format('H:m') < '17:30' ) ) {
+                $params = [
+                    'data' => $data,
+                    'hora' => $hora,
+                    'usuarioId' => $this->session->get('logado')['id'],
+                ];
+                
+                $agendaExiste = $this->getDoctrine()->getRepository(Agenda::class)->validar([
+                    'data' => $data,
+                    'hora' => $hora,
+                ]);
+                
+                $return['status'] = 'ok';
+                if (!$agendaExiste) {
+                    $agenda = $this->getDoctrine()->getRepository(Agenda::class)->salvar($params);
+
+                    $return['message'] = [
+                        'id' => $agenda->getId(),
+                        'nome' => $this->session->get('logado')['nome'],
+                        'data' => $agenda->getData()->format('Y-m-d') . 'T' . $agenda->getHora()->format('H:i'),
+                    ];
+                } else {
+                    $return['message'] = 'Data sobreposta';
+                }
+            }
         }
         
         return new JsonResponse($return);
@@ -151,19 +162,25 @@ class DefaultController extends Controller
     public function agendaApagarAction(Request $request) {
         $return = [
             'status' => 'error',
-            'mensagem' => 'Não logado',
+            'message' => 'Não logado',
         ];
         
         if ( $request->isMethod('POST') && $this->session->get('logado')) {
             $dados = $request->request->all();
             
-            $remover = $this->getDoctrine()->getRepository(Agenda::class)->remover($dados['id']);
-            
-            $return['status'] = 'ok';
-            if ($remover) {
-                $return['mensagem'] = $dados['id'];
+            $agenda = $this->getDoctrine()->getRepository(Agenda::class)->find($dados['id']);
+            if ($agenda && $agenda->getUsuarioId() == $this->session->get('logado')['id']) {
+                $remover = $this->getDoctrine()->getRepository(Agenda::class)->remover($agenda);
+                
+                $return['status'] = 'ok';
+                if ($remover) {
+                    $return['message'] = $dados['id'];
+                } else {
+                    $return['message'] = '';
+                }
             } else {
-                $return['mensagem'] = '';
+                $return['status'] = 'error';
+                $return['message'] = 'Usuário divergente';
             }
         }
         

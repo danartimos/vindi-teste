@@ -15,6 +15,25 @@ use Doctrine\ORM\EntityManagerInterface;
 class AgendaRepository extends \Doctrine\ORM\EntityRepository
 {
     /**
+     * Verifica a existência da agenda
+     * @param $params
+     */
+    public function validar($params) {
+        $horaFinal = date('H:i', strtotime( $params['hora']->format('H:i') . ' +1 hour'));
+        $horaFinal = new \DateTime($horaFinal);
+
+        $query = $this->createQueryBuilder('A');
+        $query->where('A.data = :data')
+            ->setParameter('data', $params['data']);
+        $query->andWhere('A.hora >= :horaInicial')
+            ->setParameter('horaInicial', $params['hora']);
+        $query->andWhere('A.hora < :horaFinal')
+            ->setParameter('horaFinal', $horaFinal);
+
+        return $query->getQuery()->getResult();
+    }
+    
+    /**
      * Salva um novo agendamento
      * @param $params
      * @return boolean
@@ -33,11 +52,10 @@ class AgendaRepository extends \Doctrine\ORM\EntityRepository
     
     /**
      * Apaga um agendamento
-     * @param $id
+     * @param $agenda
      * @return boolean
      */
-    public function remover($id) {
-        $agenda = $this->find($id);
+    public function remover($agenda) {
         if ($agenda) {
             $this->_em->remove($agenda);
             $this->_em->flush();

@@ -43,7 +43,7 @@ class Calendario {
                     };
                     $.post(urlApagar, data,
                         function(data, status){
-                            if (data.mensagem !== '' ) {
+                            if (data.status == 'ok' && data.mensagem !== '' ) {
                                 info.event.remove();
                             }
                         }
