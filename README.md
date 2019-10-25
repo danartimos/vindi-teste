@@ -1,21 +1,21 @@
 projeto
 =======
 
-Criado projeto onde se agenda horário de uma sala.
+Projeto onde se agenda horário de uma sala.
+---
 
-Para iniciar o projeto é necesário rodar o Symfony
+Para iniciar o projeto é necessário iniciar o servidor do Symfony
 
 > php bin\console server:run
 
-Além disso, é necessário dar um início na base de dados
+Além disso, é necessário criar a base de dados caso ela ainda não tenha sido criada
 
 > php bin/console doctrine:database:create
 
-Depois de riada a base, é necessário criar as tabelas
-
-> php bin/console doctrine:schema:validate
+Depois de criada a base, é necessário criar as tabelas a serem utilizadas (Agenda, Usuario)
 
 > php bin/console doctrine:schema:create
 
-Após isso é só entrar no projeto e ir em Usuário para criar
-um novo e dar início ao sistema.
+> php bin/console doctrine:schema:validate
+
+Após isso é só entrar no projeto e ir em 'Usuário' para criar um novo e dar início a utilização da Agenda
