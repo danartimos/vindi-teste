@@ -19,15 +19,15 @@ class AgendaRepository extends \Doctrine\ORM\EntityRepository
      * @param $params
      */
     public function validar($params) {
-        $horaFinal = date('H:i', strtotime( $params['hora']->format('H:i') . ' +1 hour'));
+        $horaFinal = date('H:i', strtotime( $params['hora']->format('H:i') . ' +30 minutes'));
         $horaFinal = new \DateTime($horaFinal);
 
         $query = $this->createQueryBuilder('A');
         $query->where('A.data = :data')
             ->setParameter('data', $params['data']);
-        $query->andWhere('A.hora >= :horaInicial')
+        $query->andWhere('A.hora = :horaInicial')
             ->setParameter('horaInicial', $params['hora']);
-        $query->andWhere('A.hora < :horaFinal')
+        $query->orWhere('A.hora = :horaFinal')
             ->setParameter('horaFinal', $horaFinal);
 
         return $query->getQuery()->getResult();
