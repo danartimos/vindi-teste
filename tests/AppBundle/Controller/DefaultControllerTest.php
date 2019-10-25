@@ -51,7 +51,7 @@ class DefaultControllerTest extends WebTestCase
         //teste de login errado
         $params = [
             'usuario' => 'teste1',
-            'senha' => 'teste',
+            'senha' => 'teste1',
         ];
         $crawler = $client->request('POST', '/usuario/entrar', $params);
 
