@@ -130,7 +130,7 @@ class DefaultController extends Controller
             $data = new \DateTime($dados[0]);
             $hora = new \DateTime(substr($dados[1],0,5));
             
-            if ( ( $data->format('w') != '0' and $data->format('w') != '6' ) and ( $hora->format('H:i') >= '09:00' and $hora->format('H:m') < '17:30' ) ) {
+            if ( ( $data->format('w') != '0' and $data->format('w') != '6' ) and ( $hora->format('H:i') >= '09:00' and $hora->format('H:i') < '17:30' ) ) {
                 $params = [
                     'data' => $data,
                     'hora' => $hora,
